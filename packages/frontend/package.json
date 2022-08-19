@@ -11,8 +11,6 @@
     "fix:prettier": "prettier '**/*.{json,md}' --ignore-path .gitignore --write",
     "fix:eslint": "yarn lint:eslint --fix",
     "dev": "next dev",
-    "prebuild": "run-p prebuild:*",
-    "prebuild:contract": "cd ../contracts && yarn && yarn build && cd ../frontend",
     "build": "next build",
     "start": "next start",
     "storybook": "start-storybook -s ./public -p 6006",
