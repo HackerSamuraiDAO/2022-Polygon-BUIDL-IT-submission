@@ -1,4 +1,4 @@
-# Hackathon Template
+# Rakugaki
 
 ## Principle
 

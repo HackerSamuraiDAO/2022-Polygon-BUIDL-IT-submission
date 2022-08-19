@@ -1,14 +1,13 @@
 {
   "app": {
-    "name": "NAME",
-    "description": "DESCRIPTION",
+    "name": "Rakugaki",
+    "description": "Discover graffiti and make it NFT",
     "uri": "http://localhost:3000",
     "defaultLog": "default log goes here"
   },
   "links": {
     "github": {
-      "uri": "https://github.com/HackerSamuraiDAO/template",
-      "icon": ""
+      "uri": "https://github.com/HackerSamuraiDAO/2022-Polygon-BUIDL-IT-submission"
     }
   },
   "wallets": {
