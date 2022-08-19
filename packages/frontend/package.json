@@ -13,8 +13,8 @@
     "dev": "next dev",
     "prebuild": "run-p prebuild:*",
     "prebuild:contract": "cd ../contracts && yarn && yarn build && cd ../frontend",
-    "build": "npx next build",
-    "start": "npx next start",
+    "build": "next build",
+    "start": "next start",
     "storybook": "start-storybook -s ./public -p 6006",
     "build-storybook": "build-storybook"
   },
