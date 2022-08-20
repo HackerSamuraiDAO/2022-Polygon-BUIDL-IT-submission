@@ -149,7 +149,6 @@ export const Main: React.FC = () => {
             {modalMode !== "completed" ? (
               <Button
                 w="full"
-                variant={config.styles.button.variant}
                 rounded={config.styles.button.rounded}
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
@@ -161,7 +160,6 @@ export const Main: React.FC = () => {
             ) : (
               <Button
                 w="full"
-                variant={config.styles.button.variant}
                 rounded={config.styles.button.rounded}
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
@@ -176,7 +174,6 @@ export const Main: React.FC = () => {
               {modalMode === "photoPreview" && (
                 <Button
                   w="full"
-                  variant={config.styles.button.variant}
                   rounded={config.styles.button.rounded}
                   size={config.styles.button.size}
                   fontSize={config.styles.button.fontSize}
@@ -190,7 +187,6 @@ export const Main: React.FC = () => {
               {modalMode === "modelPreview" && (
                 <Button
                   w="full"
-                  variant={config.styles.button.variant}
                   rounded={config.styles.button.rounded}
                   size={config.styles.button.size}
                   fontSize={config.styles.button.fontSize}
@@ -205,7 +201,6 @@ export const Main: React.FC = () => {
                 <Button
                   as={Link}
                   w="full"
-                  variant={config.styles.button.variant}
                   rounded={config.styles.button.rounded}
                   size={config.styles.button.size}
                   fontSize={config.styles.button.fontSize}

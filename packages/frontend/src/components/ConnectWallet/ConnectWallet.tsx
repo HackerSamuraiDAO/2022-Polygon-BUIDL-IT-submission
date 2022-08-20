@@ -28,7 +28,6 @@ export const ConnectWallet: React.FC<ConnectWalletProps> = ({ callback }) => {
             <Button
               key={key}
               width="full"
-              variant={config.styles.button.variant}
               rounded={config.styles.button.rounded}
               size={config.styles.button.size}
               fontSize={config.styles.button.fontSize}
