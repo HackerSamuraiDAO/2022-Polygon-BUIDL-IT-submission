@@ -88,7 +88,7 @@ export const Main: React.FC = () => {
   return (
     <Box minHeight={"100vh"} w={"full"} position="relative">
       {mainMode === "map" && <Map />}
-      {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} />}
+      {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} facingMode="environment" />}
       <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
           <Flex position="absolute" left="12" color="white" h="full" align="center">
