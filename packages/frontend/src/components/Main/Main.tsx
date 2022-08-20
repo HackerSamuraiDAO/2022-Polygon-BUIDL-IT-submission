@@ -86,7 +86,7 @@ export const Main: React.FC = () => {
   };
 
   return (
-    <Box minHeight={"100vh"} w={"full"} position="relative">
+    <Box minHeight={"100dvh"} w={"full"} position="relative">
       {mainMode === "map" && <Map />}
       {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} facingMode="environment" />}
       <Box bottom="8" position="absolute" w="full">
