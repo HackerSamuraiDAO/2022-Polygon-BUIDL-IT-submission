@@ -28,9 +28,12 @@
     "google-map-react": "^2.2.0",
     "next": "12.2.4",
     "react": "^18.2.0",
+    "react-camera-pro": "^1.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-webcam": "^7.0.1",
     "recoil": "^0.7.5",
+    "styled-components": "^5.3.5",
     "wagmi": "^0.6.1"
   },
   "devDependencies": {

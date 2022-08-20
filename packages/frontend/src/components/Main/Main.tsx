@@ -1,5 +1,6 @@
 import { Box, Button, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import { Camera } from "react-camera-pro";
 
 import config from "../../../config.json";
 import { sleep } from "../../lib/utils/sleep";
@@ -20,7 +21,9 @@ export const Main: React.FC = () => {
   const [mainMode, setMainMode] = React.useState<MainMode>("map");
   const [modalMode, setModalMode] = React.useState<ModalMode>("photoPreview");
   const [isLoading, setIsLoading] = React.useState(false);
+
   const [image, setImage] = React.useState("");
+  const camera = React.useRef<{ takePhoto: () => string }>(null);
 
   const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
 
@@ -44,9 +47,13 @@ export const Main: React.FC = () => {
   };
 
   const takePhoto = () => {
+    if (!camera.current) {
+      return;
+    }
     onLoggerOpen();
+    const image = camera.current.takePhoto();
+    setImage(image);
     logger.log("phote is taken. you can create 3d model or retake.");
-    setImage("set image here");
     onOpen();
   };
 
@@ -80,7 +87,8 @@ export const Main: React.FC = () => {
 
   return (
     <Box minHeight={"100vh"} w={"full"} position="relative">
-      <Map />
+      {mainMode === "map" && <Map />}
+      {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} />}
       <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
           <Flex position="absolute" left="12" color="white" h="full" align="center">
@@ -116,7 +124,13 @@ export const Main: React.FC = () => {
       >
         <Stack spacing="4">
           {modalMode === "photoPreview" && (
-            <Image height={"400px"} src={image} fallbackSrc="/img/placeholders/400x400.png" alt="preview" />
+            <Image
+              height="400px"
+              src={image}
+              fallbackSrc="/img/placeholders/400x400.png"
+              alt="preview"
+              objectFit={"contain"}
+            />
           )}
           {modalMode === "modelPreview" && (
             <Box className="sketchfab-embed-wrapper" w="full">

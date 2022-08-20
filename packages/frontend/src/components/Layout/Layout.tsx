@@ -20,7 +20,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Flex minHeight={"100vh"} direction={"column"}>
         <Header position={position} top={headerTop} />
         {children}
-        <Logger position={position} />
+        {/* <Logger position={position} /> */}
         {/* <Footer position={position} bottom={footerBottom} /> */}
       </Flex>
     </Box>

@@ -19,7 +19,7 @@ export const Logger: React.FC<LoggerProps> = ({ position }) => {
         <Box
           shadow="base"
           borderRadius="md"
-          p="4"
+          p="2"
           backgroundColor={"gray.800"}
           opacity="90%"
           zIndex="1401"
@@ -27,7 +27,7 @@ export const Logger: React.FC<LoggerProps> = ({ position }) => {
           top={"0"}
           right={"0"}
           w={"xs"}
-          m={"2"}
+          m={"1"}
         >
           <Text color="blue.400" fontSize="xs">
             {`${config.app.name} > `}
