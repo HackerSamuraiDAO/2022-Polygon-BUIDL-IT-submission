@@ -1,4 +1,4 @@
-import { Box, Button, useDisclosure } from "@chakra-ui/react";
+import { Box, BoxProps, Button, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 
 import config from "../../../config.json";
@@ -6,18 +6,16 @@ import { useIsWagmiConnected } from "../../hooks/useIsWagmiConnected";
 import { ConnectWallet } from "../ConnectWallet";
 import { Modal } from "../Modal";
 
-export interface ConnectWalletWrapperProps {
+export interface ConnectWalletWrapperProps extends BoxProps {
   children: React.ReactNode;
 }
 
-export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({
-  children,
-}) => {
+export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({ children, ...props }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isWagmiConnected } = useIsWagmiConnected();
 
   return (
-    <Box>
+    <Box {...props}>
       {!isWagmiConnected && (
         <Box>
           <Button

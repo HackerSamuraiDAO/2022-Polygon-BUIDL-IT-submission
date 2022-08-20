@@ -2,8 +2,9 @@
   "app": {
     "name": "Rakugaki",
     "description": "Discover graffiti and make it NFT",
-    "uri": "http://localhost:3000",
-    "defaultLog": "default log goes here"
+    "uri": "https://rakugaki-2022-polygon-buidl-fdonnxsjd-blockbase.vercel.app",
+    "defaultLog": "developer mode is on, system console is displayed for the hackathon demo. Rakugaki enables you to discover graffiti and archive it using IPFS and polygon NFT.",
+    "layout": "dynamic"
   },
   "links": {
     "github": {
@@ -25,20 +26,20 @@
   "styles": {
     "button": {
       "variant": "outline",
-      "rounded": "2xl",
-      "size": "lg",
+      "rounded": "lg",
+      "size": "md",
       "fontSize": "sm"
     },
     "text": {
       "color": {
         "primary": "gray.800",
-        "secondary": "gray.600"
+        "secondary": "gray.400"
       }
     },
     "background": {
       "color": {
         "main": "white",
-        "layout": "white"
+        "layout": "gray.200"
       }
     }
   }

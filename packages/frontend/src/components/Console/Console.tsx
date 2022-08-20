@@ -5,7 +5,15 @@ import { useRecoilValue } from "recoil";
 import config from "../../../config.json";
 import { consoleState } from "./consoleState";
 
-export const Console: React.FC = () => {
+export interface ConsoleProps {
+  position?: "absolute";
+  top?: "14";
+  right?: "0";
+  m?: "2";
+  w?: "sm";
+}
+
+export const Console: React.FC<ConsoleProps> = ({ position, top, right, m, w }) => {
   const { mode, logs } = useRecoilValue(consoleState);
 
   return (
@@ -13,21 +21,21 @@ export const Console: React.FC = () => {
       shadow="base"
       borderRadius="md"
       p="4"
-      minH="24"
+      minH="16"
       backgroundColor={"gray.800"}
-      opacity="90%"
+      opacity="80%"
+      zIndex="1401"
+      position={position}
+      top={top}
+      right={right}
+      w={w}
+      m={m}
     >
       <Text color="blue.400" fontSize="xs">
         {`${config.app.name} > `}
         {logs.map((log, i) => {
           return (
-            <Text
-              key={`console-${i}`}
-              color={mode === "log" ? "white" : "red.400"}
-              fontSize="xs"
-              as="span"
-              m="0.5"
-            >
+            <Text key={`console-${i}`} color={mode === "log" ? "white" : "red.400"} fontSize="xs" as="span" m="0.5">
               {log}
             </Text>
           );

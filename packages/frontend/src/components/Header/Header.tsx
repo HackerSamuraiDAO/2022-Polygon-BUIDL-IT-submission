@@ -5,10 +5,15 @@ import config from "../../../config.json";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
 import { Wallet } from "../Wallet";
 
-export const Header: React.FC = () => {
+export interface HeaderProps {
+  position?: "absolute";
+  top?: "0";
+}
+
+export const Header: React.FC<HeaderProps> = ({ position, top }) => {
   return (
-    <Box p="4" as="header">
-      <Flex justify="space-between">
+    <Box py="2" px="4" as="header" w="full" position={position} backgroundColor={"white"} top={top} zIndex="1401">
+      <Flex justify="space-between" align="center">
         <Text fontWeight={"bold"} color={config.styles.text.color}>
           {config.app.name}
         </Text>

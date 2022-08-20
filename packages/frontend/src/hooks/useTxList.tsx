@@ -1,4 +1,4 @@
-import { TXList } from "../type/txList";
+import { TXList } from "../types/txList";
 
 const LOCAL_STORAGE_KEY = "txList";
 

@@ -1,5 +1,8 @@
+import { Icon } from "@chakra-ui/react";
 import { FaGithub } from "react-icons/fa";
 
+import config from "../../../config.json";
+
 export const icons = {
-  github: <FaGithub size="1.25rem" color="gray" />,
+  github: <Icon as={FaGithub} size="1.25rem" color={config.styles.text.color.secondary} />,
 };

@@ -25,11 +25,13 @@
     "ethers": "^5.6.9",
     "framer-motion": "^6",
     "next": "12.2.4",
+    "next-transpile-modules": "^9.0.0",
     "react": "^18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
     "recoil": "^0.7.5",
-    "wagmi": "^0.6.1"
+    "wagmi": "^0.6.1",
+    "wrld-react": "^1.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",

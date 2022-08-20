@@ -11,17 +11,22 @@ export interface LayoutProps {
 }
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
+  const position = config.app.layout === "dynamic" ? "absolute" : undefined;
+  const headerTop = config.app.layout === "dynamic" ? "0" : undefined;
+  const footerBottom = config.app.layout === "dynamic" ? "0" : undefined;
+
+  const consoleTop = config.app.layout === "dynamic" ? "14" : undefined;
+  const consoleRight = config.app.layout === "dynamic" ? "0" : undefined;
+  const consoleM = config.app.layout === "dynamic" ? "2" : undefined;
+  const consoleW = config.app.layout === "dynamic" ? "xs" : undefined;
+
   return (
-    <Box backgroundColor={config.styles.background.color.layout}>
+    <Box backgroundColor={config.styles.background.color.layout} position="relative">
       <Flex minHeight={"100vh"} direction={"column"}>
-        <Header />
-        <Container flex={1} maxWidth="xl" p="4">
-          <Stack spacing="4">
-            {children}
-            <Console />
-          </Stack>
-        </Container>
-        <Footer />
+        <Header position={position} top={headerTop} />
+        {children}
+        <Console position={position} top={consoleTop} right={consoleRight} m={consoleM} w={consoleW} />
+        <Footer position={position} bottom={footerBottom} />
       </Flex>
     </Box>
   );

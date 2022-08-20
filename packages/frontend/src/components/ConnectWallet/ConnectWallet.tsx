@@ -4,7 +4,7 @@ import { useConnect } from "wagmi";
 
 import config from "../../../config.json";
 import { connectors } from "../../lib/wagmi";
-import { WalletKey } from "../../type/confg";
+import { WalletKey } from "../../types/confg";
 
 export interface ConnectWalletProps {
   callback?: () => void;

@@ -2,12 +2,17 @@ import { Box, ButtonGroup, IconButton, Stack, Text } from "@chakra-ui/react";
 import React from "react";
 
 import config from "../../../config.json";
-import { LinkKey } from "../../type/confg";
+import { LinkKey } from "../../types/confg";
 import { icons } from "./data";
 
-export const Footer: React.FC = () => {
+export interface FooterProps {
+  position?: "absolute";
+  bottom?: "0";
+}
+
+export const Footer: React.FC<FooterProps> = ({ position, bottom }) => {
   return (
-    <Box px="4" py="2" as="footer">
+    <Box p="4" as="footer" position={position} w="full" bottom={bottom} zIndex="1401">
       <Stack justify="space-between" direction="row" align="center">
         <Text fontSize="xs" color={config.styles.text.color.secondary}>
           {config.app.description}
