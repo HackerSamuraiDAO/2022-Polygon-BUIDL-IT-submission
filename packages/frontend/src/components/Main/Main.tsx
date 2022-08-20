@@ -13,7 +13,7 @@ export type MainMode = "map" | "photo";
 export type ModalMode = "photoPreview" | "modelPreview" | "completed";
 
 export const Main: React.FC = () => {
-  const { console } = useConsole();
+  const { console, onOpen: onConsoleOpen, onClose: onConsoleClose } = useConsole();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [mainMode, setMainMode] = React.useState<MainMode>("map");
@@ -28,6 +28,7 @@ export const Main: React.FC = () => {
     setImage("");
     setModalMode("photoPreview");
     onClose();
+    onConsoleClose();
     console.log(photoModeInitialMessage);
   };
 
@@ -42,6 +43,7 @@ export const Main: React.FC = () => {
   };
 
   const takePhoto = () => {
+    onConsoleOpen();
     console.log("phote is taken. you can create 3d model or retake.");
     setImage("set image here");
     onOpen();

@@ -12,7 +12,7 @@ export interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ position, top }) => {
   return (
-    <Box py="2" px="4" as="header" w="full" position={position} top={top} zIndex="10">
+    <Box p="4" as="header" w="full" position={position} top={top} zIndex="10">
       <Flex justify="space-between" align="center">
         <Text fontWeight={"bold"} color={"white"}>
           {config.app.name}

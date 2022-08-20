@@ -1,9 +1,10 @@
 import { useRecoilState } from "recoil";
 
-import { consoleState } from "./consoleState";
+import { consoleState, consoleVisible } from "./consoleState";
 
 export const useConsole = () => {
   const [, setConsoleState] = useRecoilState(consoleState);
+  const [isVisible, setConsoleVisible] = useRecoilState(consoleVisible);
 
   const _console = {
     log: (...logs: any[]) => {
@@ -15,5 +16,17 @@ export const useConsole = () => {
       console.error(...logs);
     },
   };
-  return { console: _console };
+
+  const onOpen = () => {
+    setConsoleVisible(true);
+  };
+
+  const onClose = () => {
+    setConsoleVisible(false);
+  };
+
+  const onToggle = () => {
+    setConsoleVisible(!isVisible);
+  };
+  return { console: _console, onOpen, onClose, onToggle };
 };

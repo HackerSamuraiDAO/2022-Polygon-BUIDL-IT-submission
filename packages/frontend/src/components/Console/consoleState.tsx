@@ -9,3 +9,8 @@ export const consoleState = atom({
     logs: [config.app.defaultLog],
   },
 });
+
+export const consoleVisible = atom({
+  key: "consoleVisible",
+  default: false,
+});

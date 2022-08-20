@@ -15,17 +15,12 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const headerTop = config.app.layout === "dynamic" ? "0" : undefined;
   const footerBottom = config.app.layout === "dynamic" ? "0" : undefined;
 
-  const consoleTop = config.app.layout === "dynamic" ? "14" : undefined;
-  const consoleRight = config.app.layout === "dynamic" ? "0" : undefined;
-  const consoleM = config.app.layout === "dynamic" ? "1" : undefined;
-  const consoleW = config.app.layout === "dynamic" ? "xs" : undefined;
-
   return (
     <Box backgroundColor={config.styles.background.color.layout} position="relative">
       <Flex minHeight={"100vh"} direction={"column"}>
         <Header position={position} top={headerTop} />
         {children}
-        <Console position={position} top={consoleTop} right={consoleRight} m={consoleM} w={consoleW} />
+        <Console position={position} />
         <Footer position={position} bottom={footerBottom} />
       </Flex>
     </Box>

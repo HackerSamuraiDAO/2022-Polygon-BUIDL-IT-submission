@@ -1,11 +1,13 @@
 import { Box, Button } from "@chakra-ui/react";
 import React from "react";
-import { useDisconnect } from "wagmi";
+import { useAccount, useDisconnect } from "wagmi";
 
 import config from "../../../config.json";
+import { truncate } from "../../lib/utils/truncate";
 
 export const Wallet: React.FC = () => {
   const { disconnect } = useDisconnect();
+  const { address } = useAccount();
 
   return (
     <Box>
@@ -17,7 +19,7 @@ export const Wallet: React.FC = () => {
         color={config.styles.text.color.primary}
         onClick={() => disconnect()}
       >
-        Disconnect
+        {truncate(address, 6, 6)}
       </Button>
     </Box>
   );
