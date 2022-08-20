@@ -3,13 +3,13 @@ import React from "react";
 import { useRecoilValue } from "recoil";
 
 import config from "../../../config.json";
-import { consoleState, consoleVisible } from "./consoleState";
+import { consoleState, consoleVisible } from "./loggerState";
 
-export interface ConsoleProps {
+export interface LoggerProps {
   position?: "absolute";
 }
 
-export const Console: React.FC<ConsoleProps> = ({ position }) => {
+export const Logger: React.FC<LoggerProps> = ({ position }) => {
   const { mode, logs } = useRecoilValue(consoleState);
   const isVisible = useRecoilValue(consoleVisible);
 

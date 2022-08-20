@@ -4,8 +4,9 @@ import React from "react";
 import config from "../../../config.json";
 import { sleep } from "../../lib/utils/sleep";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
-import { useConsole } from "../Console";
+import { useLogger } from "../Logger";
 import { Modal } from "../Modal";
+import { Map } from "./Map";
 import { ModeChangeIcon } from "./ModeChangeIcon";
 import { TakePhotoIcon } from "./TakePhotoIcon";
 
@@ -13,7 +14,7 @@ export type MainMode = "map" | "photo";
 export type ModalMode = "photoPreview" | "modelPreview" | "completed";
 
 export const Main: React.FC = () => {
-  const { console, onOpen: onConsoleOpen, onClose: onConsoleClose } = useConsole();
+  const { logger, onOpen: onLoggerOpen, onClose: onLoggerClose } = useLogger();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
   const [mainMode, setMainMode] = React.useState<MainMode>("map");
@@ -28,23 +29,23 @@ export const Main: React.FC = () => {
     setImage("");
     setModalMode("photoPreview");
     onClose();
-    onConsoleClose();
-    console.log(photoModeInitialMessage);
+    onLoggerClose();
+    logger.log(photoModeInitialMessage);
   };
 
   const backToInitialMode = () => {
-    console.log(config.app.defaultLog);
+    logger.log(config.app.defaultLog);
     setMainMode("map");
   };
 
   const mainModeChange = () => {
-    console.log(photoModeInitialMessage);
+    logger.log(photoModeInitialMessage);
     setMainMode("photo");
   };
 
   const takePhoto = () => {
-    onConsoleOpen();
-    console.log("phote is taken. you can create 3d model or retake.");
+    onLoggerOpen();
+    logger.log("phote is taken. you can create 3d model or retake.");
     setImage("set image here");
     onOpen();
   };
@@ -55,31 +56,32 @@ export const Main: React.FC = () => {
 
   const photoToModel = async () => {
     setIsLoading(true);
-    console.log("creating 3d models now. it takes some time...");
+    logger.log("creating 3d models now. it takes some time...");
     await sleep(3000);
     setIsLoading(false);
-    console.log("3d model created. you can create NFT or retake.");
+    logger.log("3d model created. you can create NFT or retake.");
     setModalMode("modelPreview");
   };
 
   const modelToNFT = async () => {
     setIsLoading(true);
-    console.log("creating NFT now. it takes some time...");
+    logger.log("creating NFT now. it takes some time...");
     await sleep(3000);
     setIsLoading(false);
-    console.log("NFT created. you can view it in map viewer or opensea.");
+    logger.log("NFT created. you can view it in map viewer or opensea.");
     setModalMode("completed");
   };
 
   const viewInMap = async () => {
     clear();
-    console.log("You can view created NFT in map viewer.");
+    logger.log("You can view created NFT in map viewer.");
     setMainMode("map");
   };
 
   return (
-    <Box backgroundColor={"black"} minHeight={"100vh"} w={"full"} position="relative">
-      <Box bottom="16" position="absolute" w="full">
+    <Box minHeight={"100vh"} w={"full"} position="relative">
+      <Map />
+      <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
           <Flex position="absolute" left="12" color="white" h="full" align="center">
             {mainMode === "photo" && (
@@ -90,7 +92,7 @@ export const Main: React.FC = () => {
                 size={"xs"}
                 fontSize={"xs"}
                 color={config.styles.text.color.primary}
-                opacity="80%"
+                shadow="md"
                 onClick={backToInitialMode}
               >
                 Cancel

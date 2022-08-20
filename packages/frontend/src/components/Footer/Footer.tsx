@@ -12,9 +12,18 @@ export interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ position, bottom }) => {
   return (
-    <Box px="4" as="footer" position={position} w="full" bottom={bottom} zIndex="10">
+    <Box
+      px="4"
+      as="footer"
+      position={position}
+      w="full"
+      bottom={bottom}
+      zIndex="10"
+      background="gray.800"
+      opacity="75%"
+    >
       <Stack justify="space-between" direction="row" align="center">
-        <Text fontSize="xs" color={config.styles.text.color.secondary}>
+        <Text fontSize="xs" color={"white"} fontWeight="bold">
           {config.app.description}
         </Text>
         <ButtonGroup variant={"ghost"}>

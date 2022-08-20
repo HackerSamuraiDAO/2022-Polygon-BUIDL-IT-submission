@@ -13,6 +13,7 @@ export const Wallet: React.FC = () => {
     <Box>
       <Button
         width="full"
+        shadow="md"
         rounded={config.styles.button.rounded}
         size={config.styles.button.size}
         fontSize={config.styles.button.fontSize}
