@@ -7,10 +7,11 @@ import { ConnectWallet } from "../ConnectWallet";
 import { Modal } from "../Modal";
 
 export interface ConnectWalletWrapperProps extends BoxProps {
+  mode?: "icon";
   children: React.ReactNode;
 }
 
-export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({ children, ...props }) => {
+export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({ mode, children, ...props }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { isWagmiConnected } = useIsWagmiConnected();
 
@@ -20,7 +21,7 @@ export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({ chil
         <Box>
           <Button
             width="full"
-            variant={config.styles.button.variant}
+            // variant={config.styles.button.variant}
             rounded={config.styles.button.rounded}
             size={config.styles.button.size}
             fontSize={config.styles.button.fontSize}

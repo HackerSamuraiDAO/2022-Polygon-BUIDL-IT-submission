@@ -143,7 +143,7 @@ export const Main: React.FC = () => {
             </Stack>
           )}
 
-          <HStack justify={"space-between"}>
+          <HStack justify={"space-between"} spacing="4">
             {modalMode !== "completed" ? (
               <Button
                 w="full"
