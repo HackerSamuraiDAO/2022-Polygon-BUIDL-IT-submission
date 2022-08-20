@@ -17,7 +17,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const consoleTop = config.app.layout === "dynamic" ? "14" : undefined;
   const consoleRight = config.app.layout === "dynamic" ? "0" : undefined;
-  const consoleM = config.app.layout === "dynamic" ? "0" : undefined;
+  const consoleM = config.app.layout === "dynamic" ? "1" : undefined;
   const consoleW = config.app.layout === "dynamic" ? "xs" : undefined;
 
   return (

@@ -9,7 +9,7 @@ export interface ConsoleProps {
   position?: "absolute";
   top?: "14";
   right?: "0";
-  m?: "0";
+  m?: "1";
   w?: "xs";
 }
 
@@ -21,9 +21,8 @@ export const Console: React.FC<ConsoleProps> = ({ position, top, right, m, w }) 
       shadow="base"
       borderRadius="md"
       p="4"
-      minH="16"
       backgroundColor={"gray.800"}
-      opacity="80%"
+      opacity="75%"
       zIndex="1401"
       position={position}
       top={top}
