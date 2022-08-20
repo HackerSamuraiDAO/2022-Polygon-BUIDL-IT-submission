@@ -8,11 +8,11 @@ export const useConsole = () => {
   const _console = {
     log: (...logs: any[]) => {
       setConsoleState({ mode: "log", logs });
-      console.log(logs);
+      console.log(...logs);
     },
     error: (...logs: any[]) => {
       setConsoleState({ mode: "error", logs });
-      console.error(logs);
+      console.error(...logs);
     },
   };
   return { console: _console };

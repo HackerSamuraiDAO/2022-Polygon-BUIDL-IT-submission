@@ -9,8 +9,8 @@ export interface ConsoleProps {
   position?: "absolute";
   top?: "14";
   right?: "0";
-  m?: "2";
-  w?: "sm";
+  m?: "0";
+  w?: "xs";
 }
 
 export const Console: React.FC<ConsoleProps> = ({ position, top, right, m, w }) => {

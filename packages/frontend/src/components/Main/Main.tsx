@@ -21,44 +21,58 @@ export const Main: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [image, setImage] = React.useState("");
 
+  const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
+
+  const clear = () => {
+    setIsLoading(false);
+    setImage("");
+    setModalMode("photoPreview");
+    onClose();
+    console.log(photoModeInitialMessage);
+  };
+
   const backToInitialMode = () => {
+    console.log(config.app.defaultLog);
     setMainMode("map");
   };
 
   const mainModeChange = () => {
+    console.log(photoModeInitialMessage);
     setMainMode("photo");
   };
 
   const takePhoto = () => {
-    setImage("");
+    console.log("phote is taken. you can create 3d model or retake.");
+    setImage("set image here");
     onOpen();
   };
 
   const retake = () => {
-    setImage("");
-    setModalMode("photoPreview");
-    onClose();
+    clear();
   };
 
   const photoToModel = async () => {
     setIsLoading(true);
+    console.log("creating 3d models now. it takes some time...");
     await sleep(3000);
     setIsLoading(false);
+    console.log("3d model created. you can create NFT or retake.");
     setModalMode("modelPreview");
   };
 
   const modelToNFT = async () => {
     setIsLoading(true);
+    console.log("creating NFT now. it takes some time...");
     await sleep(3000);
     setIsLoading(false);
+    console.log("NFT created. you can view it in map viewer or opensea.");
     setModalMode("completed");
   };
 
   const viewInMap = async () => {
-    setImage("");
-    setModalMode("photoPreview");
+    clear();
+    console.log("You can view created NFT in map viewer.");
     setMainMode("map");
-    onClose();
   };
 
   return (

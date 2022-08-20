@@ -12,7 +12,7 @@ export interface FooterProps {
 
 export const Footer: React.FC<FooterProps> = ({ position, bottom }) => {
   return (
-    <Box p="4" as="footer" position={position} w="full" bottom={bottom} zIndex="1401">
+    <Box p="4" as="footer" position={position} w="full" bottom={bottom} zIndex="10">
       <Stack justify="space-between" direction="row" align="center">
         <Text fontSize="xs" color={config.styles.text.color.secondary}>
           {config.app.description}
