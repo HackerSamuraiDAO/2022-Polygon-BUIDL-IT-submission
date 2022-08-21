@@ -9,6 +9,7 @@ import { useLogger } from "../Logger";
 import { Modal } from "../Modal";
 import { Map } from "./Map";
 import { ModeChangeIcon } from "./ModeChangeIcon";
+import { Model } from "./Model";
 import { TakePhotoIcon } from "./TakePhotoIcon";
 
 export type MainMode = "map" | "photo";
@@ -133,20 +134,8 @@ export const Main: React.FC = () => {
             />
           )}
           {modalMode === "modelPreview" && (
-            <Box className="sketchfab-embed-wrapper" w="full">
-              <iframe
-                width="100%"
-                height="400px"
-                title="Trapped (animated)"
-                frameBorder="0"
-                allowFullScreen
-                allow="autoplay; fullscreen; xr-spatial-tracking"
-                xr-spatial-tracking
-                execution-while-out-of-viewport
-                execution-while-not-rendered
-                web-share
-                src="https://sketchfab.com/models/26009ae82e8c4211978de4e4d892f5e7/embed"
-              ></iframe>
+            <Box height="400px">
+              <Model image={image} />
             </Box>
           )}
           {modalMode === "completed" && (
@@ -188,22 +177,22 @@ export const Main: React.FC = () => {
               </Button>
             )}
 
-            <ConnectWalletWrapper w="full">
-              {modalMode === "photoPreview" && (
-                <Button
-                  w="full"
-                  rounded={config.styles.button.rounded}
-                  size={config.styles.button.size}
-                  fontSize={config.styles.button.fontSize}
-                  color={config.styles.text.color.primary}
-                  onClick={photoToModel}
-                  isLoading={isLoading}
-                  shadow="md"
-                >
-                  Convert to 3d model
-                </Button>
-              )}
-              {modalMode === "modelPreview" && (
+            {modalMode === "photoPreview" && (
+              <Button
+                w="full"
+                rounded={config.styles.button.rounded}
+                size={config.styles.button.size}
+                fontSize={config.styles.button.fontSize}
+                color={config.styles.text.color.primary}
+                onClick={photoToModel}
+                isLoading={isLoading}
+                shadow="md"
+              >
+                Convert to 3d model
+              </Button>
+            )}
+            {modalMode === "modelPreview" && (
+              <ConnectWalletWrapper w="full">
                 <Button
                   w="full"
                   rounded={config.styles.button.rounded}
@@ -216,23 +205,23 @@ export const Main: React.FC = () => {
                 >
                   Convert to NFT
                 </Button>
-              )}
-              {modalMode === "completed" && (
-                <Button
-                  as={Link}
-                  w="full"
-                  rounded={config.styles.button.rounded}
-                  size={config.styles.button.size}
-                  fontSize={config.styles.button.fontSize}
-                  color={config.styles.text.color.primary}
-                  href="https://opensea.com"
-                  target="_blank"
-                  style={{ textDecoration: "none" }}
-                >
-                  View in Opensea
-                </Button>
-              )}
-            </ConnectWalletWrapper>
+              </ConnectWalletWrapper>
+            )}
+            {modalMode === "completed" && (
+              <Button
+                as={Link}
+                w="full"
+                rounded={config.styles.button.rounded}
+                size={config.styles.button.size}
+                fontSize={config.styles.button.fontSize}
+                color={config.styles.text.color.primary}
+                href="https://opensea.com"
+                target="_blank"
+                style={{ textDecoration: "none" }}
+              >
+                View in Opensea
+              </Button>
+            )}
           </HStack>
         </Stack>
       </Modal>

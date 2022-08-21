@@ -3,9 +3,9 @@ import React from "react";
 
 import config from "../../../config.json";
 import { sleep } from "../../lib/utils/sleep";
-import { Footer } from "../Footer";
+// import { Footer } from "../Footer";
 import { Header } from "../Header";
-import { Logger } from "../Logger";
+// import { Logger } from "../Logger";
 
 export interface LayoutProps {
   children: React.ReactNode;
