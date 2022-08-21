@@ -6,7 +6,7 @@ export const ModeChangeIcon: React.FC<BoxProps> = ({ ...props }) => {
   return (
     <Flex
       border="2px"
-      borderColor="gray.400"
+      borderColor="gray.600"
       rounded="full"
       cursor="pointer"
       justify={"center"}
@@ -15,7 +15,7 @@ export const ModeChangeIcon: React.FC<BoxProps> = ({ ...props }) => {
       backgroundColor={"white"}
       {...props}
     >
-      <Icon as={AiFillCamera} color="gray.400" w="75%" h="75%" />
+      <Icon as={AiFillCamera} color="gray.600" w="75%" h="75%" />
     </Flex>
   );
 };

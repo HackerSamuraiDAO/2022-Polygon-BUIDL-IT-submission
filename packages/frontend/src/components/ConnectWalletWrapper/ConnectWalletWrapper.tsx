@@ -25,6 +25,7 @@ export const ConnectWalletWrapper: React.FC<ConnectWalletWrapperProps> = ({ mode
             size={config.styles.button.size}
             fontSize={config.styles.button.fontSize}
             color={config.styles.text.color.primary}
+            shadow="md"
             onClick={onOpen}
           >
             Connect Wallet

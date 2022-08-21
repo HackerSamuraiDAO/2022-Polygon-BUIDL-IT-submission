@@ -1,4 +1,4 @@
-import { Box, Button, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Box, Button, Center, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import React from "react";
 import { Camera } from "react-camera-pro";
 
@@ -169,6 +169,7 @@ export const Main: React.FC = () => {
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
                 color={config.styles.text.color.primary}
+                shadow="md"
                 onClick={retake}
               >
                 Retake
@@ -180,6 +181,7 @@ export const Main: React.FC = () => {
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
                 color={config.styles.text.color.primary}
+                shadow="md"
                 onClick={viewInMap}
               >
                 View in Map
@@ -196,6 +198,7 @@ export const Main: React.FC = () => {
                   color={config.styles.text.color.primary}
                   onClick={photoToModel}
                   isLoading={isLoading}
+                  shadow="md"
                 >
                   Convert to 3d model
                 </Button>
@@ -209,6 +212,7 @@ export const Main: React.FC = () => {
                   color={config.styles.text.color.primary}
                   onClick={modelToNFT}
                   isLoading={isLoading}
+                  shadow="md"
                 >
                   Convert to NFT
                 </Button>

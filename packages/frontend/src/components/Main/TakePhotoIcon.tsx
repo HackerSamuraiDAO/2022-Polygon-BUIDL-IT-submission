@@ -5,7 +5,7 @@ export const TakePhotoIcon: React.FC<BoxProps> = ({ ...props }) => {
   return (
     <Flex
       border="4px"
-      borderColor="gray.400"
+      borderColor="gray.600"
       rounded="full"
       cursor="pointer"
       justify={"center"}
@@ -14,7 +14,7 @@ export const TakePhotoIcon: React.FC<BoxProps> = ({ ...props }) => {
       backgroundColor={"white"}
       {...props}
     >
-      <Box backgroundColor={"gray.400"} w="90%" h="90%" rounded="full" />
+      <Box backgroundColor={"gray.600"} w="90%" h="90%" rounded="full" />
     </Flex>
   );
 };
