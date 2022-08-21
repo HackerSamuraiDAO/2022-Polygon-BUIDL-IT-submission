@@ -14,23 +14,40 @@ function toBuffer(base64: string) {
   return buffer;
 }
 
-export const file = (data: string, file: string, type: "image/png" | "application/json") => {
+export const file = (data: string, file: string, type: "image/png" | "model/gltf+json") => {
   const _file = type === "image/png" ? toBuffer(data) : data;
   return new File([_file], file, { type });
 };
 
-export const add = async (name: string, description: string, image: File, animation_url: File) => {
-  await client.store({
-    name,
-    description,
-    image,
-    animation_url,
-  });
+// export const add = async (data: string) => {
+//   const blob = new Blob([data]);
+//   const cid = await client.storeBlob(blob);
+//   return `ipfs://${cid}`;
+// };
+
+export const metadata = async (
+  name: string,
+  description: string,
+  image: File,
+  animation_url: File,
+  latitude: number,
+  longitude: number
+) => {
   const { url } = await client.store({
     name,
     description,
     image,
-    animation_ul: animation_url,
+    animation_url,
+    attributes: [
+      {
+        trait_type: "Latitude",
+        value: latitude.toString(),
+      },
+      {
+        trait_type: "Longitude",
+        value: longitude.toString(),
+      },
+    ],
   });
   return url;
 };

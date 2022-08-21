@@ -7,7 +7,8 @@ import { useSigner } from "wagmi";
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
 import networks from "../../../../contracts/networks.json";
 import config from "../../../config.json";
-import { add, file } from "../../lib/ipfs";
+// import { add, file, metadata } from "../../lib/ipfs";
+import { file, metadata } from "../../lib/ipfs";
 import { sleep } from "../../lib/utils/sleep";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
 import { useLogger } from "../Logger";
@@ -32,6 +33,8 @@ export const Main: React.FC = () => {
   const camera = React.useRef<{ takePhoto: () => string }>(null);
   const [lat, setLat] = React.useState<number>();
   const [lng, setLng] = React.useState<number>();
+
+  const [tokenId, setTokenId] = React.useState("");
 
   const [model, setModel] = React.useState("");
 
@@ -90,7 +93,7 @@ export const Main: React.FC = () => {
 
   const modelToNFT = async () => {
     const network = networks.rinkeby;
-    if (!signer || !network) {
+    if (!signer || !network || !lat || !lng) {
       return;
     }
 
@@ -99,14 +102,18 @@ export const Main: React.FC = () => {
     //TODO: update
     const imageFile = file(image, "nft.png", "image/png");
     console.log(imageFile);
-    const modelFile = file(model, "nft.glb", "application/json");
-    console.log(modelFile);
-    const tokenURI = await add("rakugaki", "rakugaki", imageFile, modelFile);
+    const modelURI = await file(model, "nft.gltf", "model/gltf+json");
+    console.log(modelURI);
+    const tokenURI = await metadata("rakugaki", "rakugaki", imageFile, modelURI, lat, lng);
     const contract = new ethers.Contract(network.contracts.rakugaki, RakugakiArtifact.abi, signer);
     const address = await signer.getAddress();
     console.log(address, tokenURI);
-    const { hash } = await contract.mint(address, tokenURI);
-    console.log(hash);
+    const tx = await contract.mint(address, tokenURI);
+    const receipt = await tx.wait();
+    console.log(receipt);
+    const tokenId = receipt.events[0].args.tokenId.toString();
+    console.log(tokenId);
+    setTokenId(tokenId);
     setIsLoading(false);
     logger.log("NFT created. you can view it in map viewer or opensea.");
     setModalMode("completed");
@@ -249,7 +256,7 @@ export const Main: React.FC = () => {
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
                 color={config.styles.text.color.primary}
-                href="https://opensea.com"
+                href={`https://testnets.opensea.io/assets/rinkeby/${networks.rinkeby.contracts.rakugaki}/${tokenId}`}
                 target="_blank"
                 style={{ textDecoration: "none" }}
               >
