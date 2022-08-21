@@ -28,6 +28,7 @@
     "framer-motion": "^6",
     "google-map-react": "^2.2.0",
     "next": "12.2.4",
+    "nft.storage": "^7.0.0",
     "react": "^18.2.0",
     "react-camera-pro": "^1.1.1",
     "react-dom": "18.2.0",

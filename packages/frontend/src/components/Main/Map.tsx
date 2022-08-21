@@ -2,8 +2,16 @@ import { Box } from "@chakra-ui/react";
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import React from "react";
 
-export const InternalMap: React.FC<{}> = () => {
+export interface MapProps {
+  lat?: number;
+  lng?: number;
+}
+
+export const InternalMap: React.FC<MapProps> = ({ lat, lng }) => {
   const ref = React.useRef<HTMLDivElement>(null);
+
+  const [map, setMap] = React.useState<google.maps.Map>();
+
   React.useEffect(() => {
     const defaultProps = {
       center: {
@@ -14,9 +22,22 @@ export const InternalMap: React.FC<{}> = () => {
       disableDefaultUI: true,
     };
     if (ref.current) {
-      new window.google.maps.Map(ref.current, defaultProps);
+      const map = new window.google.maps.Map(ref.current, defaultProps);
+      setMap(map);
     }
   }, [ref]);
+
+  React.useEffect(() => {
+    if (!map || !lat || !lng) {
+      return;
+    }
+    new google.maps.Marker({
+      position: { lat, lng },
+      map,
+    });
+    map.setCenter({ lat, lng });
+  }, [map, lat, lng]);
+
   return (
     <Box ref={ref} w="100wh" h="100vh">
       aaa
@@ -24,7 +45,7 @@ export const InternalMap: React.FC<{}> = () => {
   );
 };
 
-export const Map: React.FC<{}> = () => {
+export const Map: React.FC<MapProps> = ({ lat, lng }) => {
   const render = (status: Status) => {
     switch (status) {
       case Status.LOADING:
@@ -32,7 +53,7 @@ export const Map: React.FC<{}> = () => {
       case Status.FAILURE:
         return <>failure</>;
       case Status.SUCCESS:
-        return <InternalMap />;
+        return <InternalMap lat={lat} lng={lng} />;
     }
   };
 

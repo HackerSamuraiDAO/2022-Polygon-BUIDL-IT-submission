@@ -1,8 +1,13 @@
 import { Box, Button, Center, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
+import { useSigner } from "wagmi";
 
+import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
+import networks from "../../../../contracts/networks.json";
 import config from "../../../config.json";
+import { add, file } from "../../lib/ipfs";
 import { sleep } from "../../lib/utils/sleep";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
 import { useLogger } from "../Logger";
@@ -25,8 +30,21 @@ export const Main: React.FC = () => {
 
   const [image, setImage] = React.useState("");
   const camera = React.useRef<{ takePhoto: () => string }>(null);
+  const [lat, setLat] = React.useState<number>();
+  const [lng, setLng] = React.useState<number>();
+
+  const [model, setModel] = React.useState("");
 
   const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
+
+  const { data: signer } = useSigner();
+
+  React.useEffect(() => {
+    navigator.geolocation.getCurrentPosition((geo) => {
+      setLat(geo.coords.latitude);
+      setLng(geo.coords.longitude);
+    });
+  }, []);
 
   const clear = () => {
     setIsLoading(false);
@@ -41,7 +59,6 @@ export const Main: React.FC = () => {
     logger.log(config.app.defaultLog);
     setMainMode("map");
   };
-
   const mainModeChange = () => {
     logger.log(photoModeInitialMessage);
     setMainMode("photo");
@@ -72,9 +89,24 @@ export const Main: React.FC = () => {
   };
 
   const modelToNFT = async () => {
+    const network = networks.rinkeby;
+    if (!signer || !network) {
+      return;
+    }
+
     setIsLoading(true);
     logger.log("creating NFT now. it takes some time...");
-    await sleep(3000);
+    //TODO: update
+    const imageFile = file(image, "nft.png", "image/png");
+    console.log(imageFile);
+    const modelFile = file(model, "nft.glb", "application/json");
+    console.log(modelFile);
+    const tokenURI = await add("rakugaki", "rakugaki", imageFile, modelFile);
+    const contract = new ethers.Contract(network.contracts.rakugaki, RakugakiArtifact.abi, signer);
+    const address = await signer.getAddress();
+    console.log(address, tokenURI);
+    const { hash } = await contract.mint(address, tokenURI);
+    console.log(hash);
     setIsLoading(false);
     logger.log("NFT created. you can view it in map viewer or opensea.");
     setModalMode("completed");
@@ -88,7 +120,7 @@ export const Main: React.FC = () => {
 
   return (
     <Box minHeight={"100vh"} w={"full"} position="relative">
-      {mainMode === "map" && <Map />}
+      {mainMode === "map" && <Map lat={lat} lng={lng} />}
       {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} facingMode="environment" />}
       <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
@@ -134,9 +166,9 @@ export const Main: React.FC = () => {
             />
           )}
           {modalMode === "modelPreview" && (
-            <Box height="400px">
-              <Model image={image} />
-            </Box>
+            <Center height="400px">
+              <Model image={image} setModel={setModel} />
+            </Center>
           )}
           {modalMode === "completed" && (
             <Stack height={"400px"} spacing="8" px="4">
@@ -146,7 +178,9 @@ export const Main: React.FC = () => {
               <Text align={"center"} fontSize="xs">
                 Your graffiti is converted to NFT, you can view it in Opensea and use it in your favorite metaverse.
               </Text>
-              <Image height={"240px"} src={image} fallbackSrc="/img/placeholders/400x400.png" alt="preview" />
+              <Center height="240px">
+                <Model image={image} />
+              </Center>
             </Stack>
           )}
 

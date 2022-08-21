@@ -2,7 +2,7 @@
   "rinkeby": {
     "chainId": 4,
     "name": "Rinkeby",
-    "contracts": {},
+    "contracts": { "rakugaki": "0x6FE8B4aa458966684E5A5b3e3a91FeE28f1AaAe0" },
     "explorer": "https://rinkeby.etherscan.io/",
     "rpc": "https://rinkeby.infura.io/v3/95f65ab099894076814e8526f52c9149"
   }

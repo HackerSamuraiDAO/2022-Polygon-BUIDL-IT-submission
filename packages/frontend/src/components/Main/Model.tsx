@@ -1,34 +1,42 @@
 import { Box, IconButton } from "@chakra-ui/react";
-import { saveAs } from "file-saver";
+// import { saveAs } from "file-saver";
 import React from "react";
-import { AiOutlineDownload } from "react-icons/ai";
+// import { AiOutlineDownload } from "react-icons/ai";
 import * as THREE from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 
+import { sleep } from "../../lib/utils/sleep";
+
 export interface ModelProps {
   image: string;
+  size?: number;
+  setModel?: (model: string) => void;
 }
 
-export const Model: React.FC<ModelProps> = ({ image }) => {
+export const Model: React.FC<ModelProps> = ({ image, size = 300, setModel }) => {
   const scene = React.useMemo(() => {
     return new THREE.Scene();
   }, []);
 
-  const download = () => {
-    const exporter = new GLTFExporter();
-    exporter.parse(
-      scene,
-      function (gltfJson) {
-        console.log(gltfJson);
-        const jsonString = JSON.stringify(gltfJson);
-        console.log(jsonString);
-        const blob = new Blob([jsonString], { type: "application/json" });
-        saveAs(blob, "exported.gltf");
-        console.log("Download requested");
-      },
-      () => {}
-    );
-  };
+  //TODO: better management
+  React.useEffect(() => {
+    if (!setModel) {
+      return;
+    }
+    sleep(100).then(() => {
+      const exporter = new GLTFExporter();
+      exporter.parse(
+        scene,
+        (gltfJson) => {
+          const jsonString = JSON.stringify(gltfJson);
+          setModel(jsonString);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    });
+  }, [setModel, scene]);
 
   React.useEffect(() => {
     const canvas = document.getElementById("canvas");
@@ -37,8 +45,8 @@ export const Model: React.FC<ModelProps> = ({ image }) => {
     }
 
     const sizes = {
-      width: 400,
-      height: 400,
+      width: size,
+      height: size,
     };
     const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({
@@ -49,7 +57,7 @@ export const Model: React.FC<ModelProps> = ({ image }) => {
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    const boxGeometry = new THREE.BoxGeometry(4, 4, 0.1);
+    const boxGeometry = new THREE.BoxGeometry(3, 3, 0.1);
     const boxTexture = new THREE.TextureLoader().load(image);
     const boxMaterial = new THREE.MeshBasicMaterial({
       map: boxTexture,
@@ -76,18 +84,10 @@ export const Model: React.FC<ModelProps> = ({ image }) => {
       renderer.render(scene, camera);
     };
     tick();
-  }, [image, scene]);
+  }, [setModel, image, scene]);
 
   return (
-    <Box position="relative">
-      <IconButton
-        onClick={download}
-        position="absolute"
-        aria-label="download"
-        right="0"
-        icon={<AiOutlineDownload />}
-        size="sm"
-      />
+    <Box>
       <canvas id="canvas" />
     </Box>
   );
