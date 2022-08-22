@@ -1,6 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
+
+import { isIntervalOn, locationState, mapState } from "../../store/viewer";
 
 export interface MapProps {
   lat?: number;
@@ -18,9 +21,28 @@ export interface MapProps {
 }
 
 export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
+  const [_isIntervalOn, setIsIntervalOn] = useRecoilState(isIntervalOn);
+  const [, setLocation] = useRecoilState(locationState);
   const ref = React.useRef<HTMLDivElement>(null);
 
   const [map, setMap] = React.useState<google.maps.Map>();
+
+  React.useEffect(() => {
+    const call = setInterval(() => {
+      if (!map) {
+        return;
+      }
+      const center = map?.getCenter();
+      if (!center) {
+        return;
+      }
+      const lat = center.lat();
+      const lng = center.lng();
+      setLocation({ lat, lng });
+      setIsIntervalOn(true);
+    }, 500);
+    return () => clearInterval(call);
+  }, [map, _isIntervalOn, setIsIntervalOn, setLocation]);
 
   React.useEffect(() => {
     const defaultProps = {
@@ -41,10 +63,7 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
     if (!map || !lat || !lng) {
       return;
     }
-    // new google.maps.Marker({
-    //   position: { lat, lng },
-    //   map,
-    // });
+
     map.setCenter({ lat, lng });
   }, [map, lat, lng]);
 
@@ -60,11 +79,7 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
     }
   }, [map, tokens]);
 
-  return (
-    <Box ref={ref} w="100wh" h="100vh">
-      aaa
-    </Box>
-  );
+  return <Box ref={ref} w="100wh" h="100vh"></Box>;
 };
 
 export const Map: React.FC<MapProps> = ({ lat, lng, tokens }) => {

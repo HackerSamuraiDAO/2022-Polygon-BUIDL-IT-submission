@@ -1,9 +1,11 @@
 import { Box, Button, Center, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import { Status, Wrapper } from "@googlemaps/react-wrapper";
 import axios from "axios";
 import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
 import ReactCrop, { Crop } from "react-image-crop";
+import { useRecoilValue } from "recoil";
 import { useSigner } from "wagmi";
 
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
@@ -14,9 +16,11 @@ import { axiosConfig } from "../../lib/axios";
 import { network } from "../../lib/env";
 import { file, metadata } from "../../lib/ipfs";
 import { sleep } from "../../lib/utils/sleep";
+import { locationState, mapState } from "../../store/viewer";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
 import { useLogger } from "../Logger";
 import { Modal } from "../Modal";
+import { ThreeMap } from "./3DMap";
 import { Map } from "./Map";
 import { ModeChangeIcon } from "./ModeChangeIcon";
 import { Model } from "./Model";
@@ -31,6 +35,8 @@ const countDecimals = function (value: number) {
 };
 
 export const Main: React.FC = () => {
+  const mapMode = useRecoilValue(mapState);
+  const threeLocation = useRecoilValue(locationState);
   const { logger, onOpen: onLoggerOpen, onClose: onLoggerClose } = useLogger();
   const { isOpen, onClose, onOpen } = useDisclosure();
 
@@ -54,15 +60,19 @@ export const Main: React.FC = () => {
 
   const { data: signer } = useSigner();
 
-  React.useEffect(() => {
-    navigator.geolocation.getCurrentPosition((geo) => {
-      setLat(geo.coords.latitude);
-      setLng(geo.coords.longitude);
-    });
-    axios.get(`${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/get`).then(({ data }) => {
-      setTokens(data);
-    });
-  }, []);
+  // const { initMap } = use3dMap();
+
+  // React.useEffect(() => {
+  //   console.log(window.google);
+  //   initMap();
+  //   // navigator.geolocation.getCurrentPosition((geo) => {
+  //   //   setLat(geo.coords.latitude);
+  //   //   setLng(geo.coords.longitude);
+  //   // });
+  //   // axios.get(`${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/get`).then(({ data }) => {
+  //   //   setTokens(data);
+  //   // });
+  // }, [initMap]);
 
   const clear = () => {
     setIsLoading(false);
@@ -176,7 +186,12 @@ export const Main: React.FC = () => {
 
   return (
     <Box minHeight={"100vh"} w={"full"} position="relative">
-      {mainMode === "map" && <Map tokens={tokens} lat={lat} lng={lng} />}
+      {mainMode === "map" && (
+        <>
+          {mapMode === "2d" && <Map tokens={tokens} lat={threeLocation.lat} lng={threeLocation.lng} />}
+          {mapMode === "3d" && <ThreeMap tokens={tokens} lat={threeLocation.lat} lng={threeLocation.lng} />}
+        </>
+      )}
       {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} facingMode="environment" />}
       <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
