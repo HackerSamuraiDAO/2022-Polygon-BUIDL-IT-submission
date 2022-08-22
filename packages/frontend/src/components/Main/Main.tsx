@@ -4,7 +4,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
-import ReactCrop, { Crop } from "react-image-crop";
+// import ReactCrop, { Crop } from "react-image-crop";
 import { useRecoilValue } from "recoil";
 import { useSigner } from "wagmi";
 
