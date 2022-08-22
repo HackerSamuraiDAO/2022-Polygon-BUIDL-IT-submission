@@ -3,6 +3,7 @@ import axios from "axios";
 import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
+import ReactCrop, { Crop } from "react-image-crop";
 import { useSigner } from "wagmi";
 
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
@@ -48,6 +49,8 @@ export const Main: React.FC = () => {
 
   const [tokens, setTokens] = React.useState([]);
   const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
+
+  const [crop, setCrop] = React.useState<Crop>();
 
   const { data: signer } = useSigner();
 
@@ -210,6 +213,7 @@ export const Main: React.FC = () => {
       >
         <Stack spacing="4">
           {modalMode === "photoPreview" && (
+            // <ReactCrop crop={crop} onChange={(c) => setCrop(c)}>
             <Image
               height="400px"
               src={image}
@@ -217,6 +221,7 @@ export const Main: React.FC = () => {
               alt="preview"
               objectFit={"contain"}
             />
+            // </ReactCrop>
           )}
           {modalMode === "modelPreview" && (
             <Center height="400px">

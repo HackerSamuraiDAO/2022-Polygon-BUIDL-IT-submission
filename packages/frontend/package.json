@@ -33,6 +33,7 @@
     "react-camera-pro": "^1.1.1",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0",
+    "react-image-crop": "^10.0.6",
     "react-webcam": "^7.0.1",
     "recoil": "^0.7.5",
     "styled-components": "^5.3.5",

@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+import "react-image-crop/dist/ReactCrop.css";
 
 import { ChakraProvider } from "@chakra-ui/react";
 import type { AppProps } from "next/app";

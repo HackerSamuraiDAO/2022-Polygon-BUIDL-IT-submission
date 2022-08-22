@@ -1,4 +1,6 @@
 import "../src/styles/globals.css";
+import "react-image-crop/dist/ReactCrop.css";
+
 import { WagmiConfig } from "wagmi";
 import { RecoilRoot } from "recoil";
 
