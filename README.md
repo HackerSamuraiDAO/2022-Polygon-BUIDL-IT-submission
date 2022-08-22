@@ -1,5 +1,9 @@
 # Rakugaki
 
+## Architecture
+
+![architecture](./docs/architecture.png)
+
 ## Principle
 
 - make it stupid simple
