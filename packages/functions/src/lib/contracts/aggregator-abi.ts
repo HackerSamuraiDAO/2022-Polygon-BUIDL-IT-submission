@@ -61,6 +61,11 @@ export const AGGREGATOR_ABI = [
           },
           {
             internalType: "string",
+            name: "imageURI",
+            type: "string",
+          },
+          {
+            internalType: "string",
             name: "modelURI",
             type: "string",
           },

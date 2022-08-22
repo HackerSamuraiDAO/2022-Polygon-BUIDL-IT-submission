@@ -1,10 +1,12 @@
 import { Box } from "@chakra-ui/react";
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { ethers } from "ethers";
 import React from "react";
 import { AmbientLight, DirectionalLight, Matrix4, PerspectiveCamera, Scene, WebGLRenderer } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 
 export interface MapProps {
+  onClickToken: (tokenId: string) => void;
   lat: number;
   lng: number;
   tokens: {
@@ -19,7 +21,7 @@ export interface MapProps {
   }[];
 }
 
-export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
+export const InternalMap: React.FC<MapProps> = ({ onClickToken, lat, lng, tokens }) => {
   // const ref = React.useRef<HTMLDivElement>(null);
 
   const [map, setMap] = React.useState<google.maps.Map>();
@@ -144,9 +146,14 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
       return;
     }
     for (const token of tokens) {
-      new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: { lat: token.location.lat, lng: token.location.lng },
+        icon: "/img/brands/pin.png",
         map,
+      });
+      marker.addListener("click", () => {
+        const tokenId = ethers.BigNumber.from(token.tokenId).toString();
+        onClickToken(tokenId);
       });
     }
   }, [map, tokens]);
@@ -154,7 +161,7 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
   return <Box id={"map"} w="100wh" h="100vh" />;
 };
 
-export const ThreeMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
+export const ThreeMap: React.FC<MapProps> = ({ onClickToken, lat, lng, tokens }) => {
   const render = (status: Status) => {
     switch (status) {
       case Status.LOADING:
@@ -162,7 +169,7 @@ export const ThreeMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
       case Status.FAILURE:
         return <>failure</>;
       case Status.SUCCESS:
-        return <InternalMap tokens={tokens} lat={lat} lng={lng} />;
+        return <InternalMap onClickToken={onClickToken} tokens={tokens} lat={lat} lng={lng} />;
     }
   };
 

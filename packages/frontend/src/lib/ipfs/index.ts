@@ -44,5 +44,5 @@ export const metadata = async (
     ],
   });
 
-  return { uri: data.url as string, modelURI: data.data.animation_url.href };
+  return { uri: data.url as string, imageURI: data.data.image.href, modelURI: data.data.animation_url.href };
 };

@@ -30,10 +30,11 @@ describe.only("Rakugaki", function () {
       lng,
       lngDecimalLength,
     };
+    const imageURI = "modelURI";
     const modelURI = "modelURI";
     const tokenURI = "tokenURI";
 
-    await rakugaki.mint(to, location, modelURI, tokenURI);
+    await rakugaki.mint(to, location, imageURI, modelURI, tokenURI);
     const expectedTokenId = 0;
 
     const data = await aggregator.get(expectedTokenId);
@@ -43,6 +44,7 @@ describe.only("Rakugaki", function () {
     await expect(data.location.latDecimalLength).to.equal(latDecimalLength);
     await expect(data.location.lng).to.equal(lng);
     await expect(data.location.lngDecimalLength).to.equal(lngDecimalLength);
+    await expect(data.imageURI).to.equal(imageURI);
     await expect(data.modelURI).to.equal(modelURI);
     await expect(data.tokenURI).to.equal(tokenURI);
     // await expect(await rakugaki.tokenURI(expectedTokenId)).to.equal(tokenURI);

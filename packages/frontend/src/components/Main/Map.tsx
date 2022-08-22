@@ -1,11 +1,13 @@
 import { Box } from "@chakra-ui/react";
 import { Status, Wrapper } from "@googlemaps/react-wrapper";
+import { ethers } from "ethers";
 import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { isIntervalOn, locationState, mapState } from "../../store/viewer";
 
 export interface MapProps {
+  onClickToken: (tokenId: string) => void;
   cLat?: number;
   cLng?: number;
   lat?: number;
@@ -22,7 +24,7 @@ export interface MapProps {
   }[];
 }
 
-export const InternalMap: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }) => {
+export const InternalMap: React.FC<MapProps> = ({ onClickToken, cLat, cLng, lat, lng, tokens }) => {
   const [_isIntervalOn, setIsIntervalOn] = useRecoilState(isIntervalOn);
   const [, setLocation] = useRecoilState(locationState);
   const ref = React.useRef<HTMLDivElement>(null);
@@ -67,10 +69,13 @@ export const InternalMap: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }
       return;
     }
 
-    new google.maps.Marker({
-      position: { lat: cLat, lng: cLng },
-      map,
-    });
+    /*
+     * @dev no current position
+     */
+    // new google.maps.Marker({
+    //   position: { lat: cLat, lng: cLng },
+    //   map,
+    // });
     map.setCenter({ lat: cLat, lng: cLng });
   }, [map, cLat, cLng]);
 
@@ -79,9 +84,14 @@ export const InternalMap: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }
       return;
     }
     for (const token of tokens) {
-      new google.maps.Marker({
+      const marker = new google.maps.Marker({
         position: { lat: token.location.lat, lng: token.location.lng },
+        icon: "/img/brands/pin.png",
         map,
+      });
+      marker.addListener("click", () => {
+        const tokenId = ethers.BigNumber.from(token.tokenId).toString();
+        onClickToken(tokenId);
       });
     }
   }, [map, tokens]);
@@ -89,7 +99,7 @@ export const InternalMap: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }
   return <Box ref={ref} w="100wh" h="100vh"></Box>;
 };
 
-export const Map: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }) => {
+export const Map: React.FC<MapProps> = ({ onClickToken, cLat, cLng, lat, lng, tokens }) => {
   const render = (status: Status) => {
     switch (status) {
       case Status.LOADING:
@@ -97,7 +107,7 @@ export const Map: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }) => {
       case Status.FAILURE:
         return <>failure</>;
       case Status.SUCCESS:
-        return <InternalMap cLat={cLat} cLng={cLng} tokens={tokens} lat={lat} lng={lng} />;
+        return <InternalMap onClickToken={onClickToken} cLat={cLat} cLng={cLng} tokens={tokens} lat={lat} lng={lng} />;
     }
   };
 

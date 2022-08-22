@@ -22,6 +22,7 @@ export interface GetOutput {
 }
 
 export const get = async (input: GetInput): Promise<GetOutput[]> => {
+  console.log("get start", input);
   const { tokenId } = input;
   const provider = new ethers.providers.JsonRpcProvider(networks[network].rpc);
   const rakugakiContract = new ethers.Contract(networks[network].contracts.rakugaki, RAKUGAKI_ABI, provider);
@@ -44,9 +45,8 @@ export const get = async (input: GetInput): Promise<GetOutput[]> => {
   const getMulcicalls = tokenIds.map((tokenId) => {
     return aggregatorMulcicallContract.get(tokenId);
   });
-  const output = await multicallProvider.all(getMulcicalls);
-
-  return output.map((v) => {
+  const rawOutput = await multicallProvider.all(getMulcicalls);
+  const output = rawOutput.map((v) => {
     const lat = v.location.lat / 10 ** v.location.latDecimalLength;
     const lng = v.location.lng / 10 ** v.location.lngDecimalLength;
 
@@ -57,8 +57,11 @@ export const get = async (input: GetInput): Promise<GetOutput[]> => {
         lat,
         lng,
       },
+      imageURI: v.imageURI,
       modelURI: v.modelURI,
       tokenURI: v.tokenURI,
     };
   });
+  console.log("get end", output);
+  return output;
 };

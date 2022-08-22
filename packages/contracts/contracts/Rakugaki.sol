@@ -14,7 +14,9 @@ contract Rakugaki is ERC721, ERC721URIStorage, ERC721Enumerable {
   }
 
   mapping(uint256 => Location) public location;
+  mapping(uint256 => string) public imageURI;
   mapping(uint256 => string) public modelURI;
+
 
   // solhint-disable-next-line no-empty-blocks
   constructor() ERC721("Rakugaki", "RKGK") {}
@@ -22,12 +24,14 @@ contract Rakugaki is ERC721, ERC721URIStorage, ERC721Enumerable {
   function mint(
     address to,
     Location memory location_,
+    string memory imageURI_,
     string memory modelURI_,
     string memory tokenURI
   ) public {
     uint256 tokenId = totalSupply();
     _mint(to, tokenId);
     location[tokenId] = location_;
+    imageURI[tokenId] = imageURI_;
     modelURI[tokenId] = modelURI_;
     _setTokenURI(tokenId, tokenURI);
   }

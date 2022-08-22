@@ -31,6 +31,7 @@ yarn dev
 cd packages/contracts
 yarn
 yarn test
+yarn build // this is used in frontend package
 ```
 
 ### Functions
@@ -38,6 +39,7 @@ yarn test
 ```
 cd packages/functions
 yarn
+yarn dev
 yarn build // this generates zip file to deploy AWS lambda
 ```
 

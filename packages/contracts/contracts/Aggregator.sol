@@ -10,6 +10,7 @@ contract Aggregator {
     uint256 tokenId;
     address holder;
     Rakugaki.Location location;
+    string imageURI;
     string modelURI;
     string tokenURI;
   }
@@ -25,8 +26,9 @@ contract Aggregator {
     address holder = rakugaki.ownerOf(tokenId);
     (uint256 lat, uint256 latDecimalLength, uint256 lng, uint256 lngDecimalLength ) = rakugaki.location(tokenId);
     Rakugaki.Location memory location = Rakugaki.Location(lat, latDecimalLength, lng, lngDecimalLength);
+    string memory imageURI = rakugaki.imageURI(tokenId);
     string memory modelURI = rakugaki.modelURI(tokenId);
     string memory tokenURI = rakugaki.tokenURI(tokenId);
-    return Data(tokenId, holder, location, modelURI, tokenURI);
+    return Data(tokenId, holder, location, imageURI, modelURI, tokenURI);
   }
 }

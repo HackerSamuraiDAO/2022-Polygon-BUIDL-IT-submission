@@ -138,6 +138,25 @@ export const RAKUGAKI_ABI = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "imageURI",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "owner",
         type: "address",
@@ -226,6 +245,11 @@ export const RAKUGAKI_ABI = [
         internalType: "struct Rakugaki.Location",
         name: "location_",
         type: "tuple",
+      },
+      {
+        internalType: "string",
+        name: "imageURI_",
+        type: "string",
       },
       {
         internalType: "string",

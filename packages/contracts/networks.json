@@ -3,8 +3,8 @@
     "chainId": 80001,
     "name": "Mumbai",
     "contracts": {
-      "rakugaki": "0xc2Fe78c43EE60579c395caa20DF29BC319F6432C",
-      "aggregator": "0xE419527B94e90CdA430A1a22983913DC08DBAEBe"
+      "rakugaki": "0x9D31bcdf2e4CC9C33586224526b15D6ECF242D61",
+      "aggregator": "0x5e9a30d8AFBeC1545957Bce9E0eEBE543FD661d6"
     },
     "explorer": "https://mumbai.polygonscan.com/",
     "rpc": "https://polygon-mumbai.g.alchemy.com/v2/vzOwiL7MTT2bjnZozNtemIWyq0zC6oYW"
