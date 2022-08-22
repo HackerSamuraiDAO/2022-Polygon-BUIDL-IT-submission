@@ -6,6 +6,8 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { isIntervalOn, locationState, mapState } from "../../store/viewer";
 
 export interface MapProps {
+  cLat?: number;
+  cLng?: number;
   lat?: number;
   lng?: number;
   tokens: {
@@ -20,7 +22,7 @@ export interface MapProps {
   }[];
 }
 
-export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
+export const InternalMap: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }) => {
   const [_isIntervalOn, setIsIntervalOn] = useRecoilState(isIntervalOn);
   const [, setLocation] = useRecoilState(locationState);
   const ref = React.useRef<HTMLDivElement>(null);
@@ -60,12 +62,17 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
   }, [ref]);
 
   React.useEffect(() => {
-    if (!map || !lat || !lng) {
+    console.log(map, cLat, cLng);
+    if (!map || !cLat || !cLng) {
       return;
     }
 
-    map.setCenter({ lat, lng });
-  }, [map, lat, lng]);
+    new google.maps.Marker({
+      position: { lat: cLat, lng: cLng },
+      map,
+    });
+    map.setCenter({ lat: cLat, lng: cLng });
+  }, [map, cLat, cLng]);
 
   React.useEffect(() => {
     if (!map || tokens.length === 0) {
@@ -82,7 +89,7 @@ export const InternalMap: React.FC<MapProps> = ({ lat, lng, tokens }) => {
   return <Box ref={ref} w="100wh" h="100vh"></Box>;
 };
 
-export const Map: React.FC<MapProps> = ({ lat, lng, tokens }) => {
+export const Map: React.FC<MapProps> = ({ cLat, cLng, lat, lng, tokens }) => {
   const render = (status: Status) => {
     switch (status) {
       case Status.LOADING:
@@ -90,7 +97,7 @@ export const Map: React.FC<MapProps> = ({ lat, lng, tokens }) => {
       case Status.FAILURE:
         return <>failure</>;
       case Status.SUCCESS:
-        return <InternalMap tokens={tokens} lat={lat} lng={lng} />;
+        return <InternalMap cLat={cLat} cLng={cLng} tokens={tokens} lat={lat} lng={lng} />;
     }
   };
 

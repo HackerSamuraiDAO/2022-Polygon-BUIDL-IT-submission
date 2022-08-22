@@ -57,7 +57,7 @@ export const Model: React.FC<ModelProps> = ({ image, size = 300, setModel }) => 
     renderer.setSize(sizes.width, sizes.height);
     renderer.setPixelRatio(window.devicePixelRatio);
 
-    const boxGeometry = new THREE.BoxGeometry(3, 3, 0.1);
+    const boxGeometry = new THREE.BoxGeometry(4.25, 4.25, 0.1);
     const boxTexture = new THREE.TextureLoader().load(image);
     const boxMaterial = new THREE.MeshBasicMaterial({
       map: boxTexture,

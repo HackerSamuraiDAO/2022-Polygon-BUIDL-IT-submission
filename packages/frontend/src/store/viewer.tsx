@@ -17,3 +17,11 @@ export const locationState = atom({
     lng: 139.70066309372865,
   },
 });
+
+export const currentLocationState = atom<{ lat?: number; lng?: number }>({
+  key: "currentLocation",
+  default: {
+    lat: undefined,
+    lng: undefined,
+  },
+});

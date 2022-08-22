@@ -1,8 +1,10 @@
 import { Box, Center, Container, Fade, Flex, Image, Stack, useDisclosure } from "@chakra-ui/react";
 import React from "react";
+import { useRecoilState, useRecoilValue } from "recoil";
 
 import config from "../../../config.json";
 import { sleep } from "../../lib/utils/sleep";
+import { currentLocationState } from "../../store/viewer";
 // import { Footer } from "../Footer";
 import { Header } from "../Header";
 // import { Logger } from "../Logger";
@@ -18,6 +20,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
   const position = config.app.layout === "dynamic" ? "absolute" : undefined;
   const headerTop = config.app.layout === "dynamic" ? "0" : undefined;
   const footerBottom = config.app.layout === "dynamic" ? "0" : undefined;
+  const [, setCurrentLocation] = useRecoilState(currentLocationState);
+
+  React.useEffect(() => {
+    navigator.geolocation.getCurrentPosition((geo) => {
+      console.log("set", geo.coords.latitude, geo.coords.longitude);
+      setCurrentLocation({ lat: geo.coords.latitude, lng: geo.coords.longitude });
+    });
+  }, [setCurrentLocation]);
 
   React.useEffect(() => {
     sleep(4000).then(() => {
@@ -34,7 +44,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         {mode === "intro" && (
           <Center height="100vh">
             <Fade in={isOpen}>
-              <Image src="/img/brands/anime.gif" objectFit={"contain"} maxW="xs" alt="anime" />
+              <Image src="/img/brands/anime.gif" objectFit={"contain"} maxW="56" alt="anime" />
             </Fade>
           </Center>
         )}

@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
 import { useRecoilValue } from "recoil";
-import { useSigner } from "wagmi";
+import { useNetwork, useSigner } from "wagmi";
 
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
 import networks from "../../../../contracts/networks.json";
@@ -14,7 +14,7 @@ import { axiosConfig } from "../../lib/axios";
 import { network } from "../../lib/env";
 import { file, metadata } from "../../lib/ipfs";
 import { sleep } from "../../lib/utils/sleep";
-import { locationState, mapState } from "../../store/viewer";
+import { currentLocationState, locationState, mapState } from "../../store/viewer";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
 import { useLogger } from "../Logger";
 import { Modal } from "../Modal";
@@ -44,8 +44,8 @@ export const Main: React.FC = () => {
 
   const [image, setImage] = React.useState("");
   const camera = React.useRef<{ takePhoto: () => string }>(null);
-  const [lat, setLat] = React.useState<number>();
-  const [lng, setLng] = React.useState<number>();
+
+  const currentLocation = useRecoilValue(currentLocationState);
 
   const [tokenId, setTokenId] = React.useState("");
 
@@ -56,19 +56,9 @@ export const Main: React.FC = () => {
 
   const { data: signer } = useSigner();
 
-  // const { initMap } = use3dMap();
+  const { chain } = useNetwork();
 
-  // React.useEffect(() => {
-  //   console.log(window.google);
-  //   initMap();
-  //   // navigator.geolocation.getCurrentPosition((geo) => {
-  //   //   setLat(geo.coords.latitude);
-  //   //   setLng(geo.coords.longitude);
-  //   // });
-  //   // axios.get(`${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/get`).then(({ data }) => {
-  //   //   setTokens(data);
-  //   // });
-  // }, [initMap]);
+  // const { initMap } = use3dMap();
 
   const clear = () => {
     setIsLoading(false);
@@ -83,9 +73,16 @@ export const Main: React.FC = () => {
     logger.log(config.app.defaultLog);
     setMainMode("map");
   };
-  const mainModeChange = () => {
+
+  const mainModeChange = async () => {
+    if (!currentLocation.lat || !currentLocation.lng) {
+      alert("please enable location. this app requires your location.");
+      return;
+    }
+    setIsLoading(true);
     logger.log(photoModeInitialMessage);
     setMainMode("photo");
+    setIsLoading(false);
   };
 
   const takePhoto = () => {
@@ -93,18 +90,25 @@ export const Main: React.FC = () => {
       return;
     }
     onLoggerOpen();
-    const image = camera.current.takePhoto();
-    setImage(image);
-    logger.log("phote is taken. you can create 3d model or retake.");
-    onOpen();
+    try {
+      const image = camera.current.takePhoto();
+      setImage(image);
+      setMainMode("map");
+      logger.log("phote is taken. you can create 3d model or retake.");
+      onOpen();
+    } catch (e: any) {
+      console.error(e);
+    }
   };
 
   const retake = () => {
     clear();
+    setMainMode("photo");
   };
 
   const photoToModel = async () => {
     setIsLoading(true);
+
     logger.log("creating 3d models now. it takes some time...");
     await sleep(3000);
     setIsLoading(false);
@@ -113,10 +117,13 @@ export const Main: React.FC = () => {
   };
 
   const modelToNFT = async () => {
-    if (!signer || !network || !lat || !lng) {
+    if (!chain || !signer || !network || !currentLocation.lat || !currentLocation.lng) {
       return;
     }
-
+    if (Number(chain.network) !== networks[network].chainId) {
+      alert(`please connect ${networks[network].name.toLowerCase()} network`);
+      return;
+    }
     setIsLoading(true);
     logger.log("creating NFT now. it takes some time...");
     //TODO: update
@@ -124,7 +131,14 @@ export const Main: React.FC = () => {
     console.log(imageFile);
     const modelFile = await file(model, "nft.gltf", "model/gltf+json");
     console.log(modelFile);
-    const { uri: tokenURI, modelURI } = await metadata("rakugaki", "rakugaki", imageFile, modelFile, lat, lng);
+    const { uri: tokenURI, modelURI } = await metadata(
+      "rakugaki",
+      "rakugaki",
+      imageFile,
+      modelFile,
+      currentLocation.lat,
+      currentLocation.lng
+    );
 
     console.log(tokenURI);
 
@@ -149,11 +163,11 @@ export const Main: React.FC = () => {
 
     const to = address;
 
-    const latDecimalLength = countDecimals(lat);
-    const latNum = lat * 10 ** latDecimalLength;
+    const latDecimalLength = countDecimals(currentLocation.lat);
+    const latNum = currentLocation.lat * 10 ** latDecimalLength;
     const latFormatted = latNum.toString();
-    const lngDecimalLength = countDecimals(lng);
-    const lngNum = lng * 10 ** lngDecimalLength;
+    const lngDecimalLength = countDecimals(currentLocation.lng);
+    const lngNum = currentLocation.lng * 10 ** lngDecimalLength;
     const lngFormatted = lngNum.toString();
     const location = {
       lat: latFormatted.toString(),
@@ -184,7 +198,15 @@ export const Main: React.FC = () => {
     <Box minHeight={"100vh"} w={"full"} position="relative">
       {mainMode === "map" && (
         <>
-          {mapMode === "2d" && <Map tokens={tokens} lat={threeLocation.lat} lng={threeLocation.lng} />}
+          {mapMode === "2d" && (
+            <Map
+              tokens={tokens}
+              cLat={currentLocation.lat}
+              cLng={currentLocation.lng}
+              lat={threeLocation.lat}
+              lng={threeLocation.lng}
+            />
+          )}
           {mapMode === "3d" && <ThreeMap tokens={tokens} lat={threeLocation.lat} lng={threeLocation.lng} />}
         </>
       )}
@@ -224,15 +246,13 @@ export const Main: React.FC = () => {
       >
         <Stack spacing="4">
           {modalMode === "photoPreview" && (
-            // <ReactCrop crop={crop} onChange={(c) => setCrop(c)}>
             <Image
               height="400px"
               src={image}
               fallbackSrc="/img/placeholders/400x400.png"
               alt="preview"
-              objectFit={"contain"}
+              objectFit={"cover"}
             />
-            // </ReactCrop>
           )}
           {modalMode === "modelPreview" && (
             <Center height="400px">

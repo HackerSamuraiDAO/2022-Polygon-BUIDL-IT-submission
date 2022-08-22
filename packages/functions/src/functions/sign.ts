@@ -24,6 +24,7 @@ export const sign = async (input: SignInput): Promise<SignOutput> => {
   const message = ethers.utils.arrayify(encoded);
 
   if (process.env.IS_AWS_KMS_ENABLED === "true") {
+    console.log("not implemented");
   } else {
     const provider = new ethers.providers.JsonRpcProvider(rpc);
     const wallet = new ethers.Wallet(process.env.LOCAL_SIGNER_PRIVATE_KEY || "", provider);

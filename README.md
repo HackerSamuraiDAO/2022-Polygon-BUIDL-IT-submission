@@ -4,16 +4,16 @@
 
 ![architecture](./docs/architecture.png)
 
-## Principle
+## Tested Environment
 
-- make it stupid simple
-- no monorepo integration for packages, leave it as separated package
-- minimum code linting fixing
+- Devices
 
-### Frontend
+  - Chrome on Mac OS
+  - Metamask Mobile on iOS
 
-- No atomic design, just simple components
-- Mainly use Chakra UI, use MUI if specific component is required, use tailwind for custom design
+- Disclaimer
+  - Other devices are not tested, please use above devices if possible.
+  - Please turn on the location tracking
 
 ## Development
 
@@ -21,7 +21,24 @@
 
 ```
 cd packages/frontend
+yarn
 yarn dev
+```
+
+### Contracts
+
+```
+cd packages/contracts
+yarn
+yarn test
+```
+
+### Functions
+
+```
+cd packages/functions
+yarn
+yarn build // this generates zip file to deploy AWS lambda
 ```
 
 ## Contribution
