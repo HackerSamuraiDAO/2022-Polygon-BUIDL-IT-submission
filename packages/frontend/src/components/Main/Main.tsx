@@ -4,7 +4,6 @@ import axios from "axios";
 import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
-// import ReactCrop, { Crop } from "react-image-crop";
 import { useRecoilValue } from "recoil";
 import { useSigner } from "wagmi";
 
@@ -55,8 +54,6 @@ export const Main: React.FC = () => {
 
   const [tokens, setTokens] = React.useState([]);
   const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
-
-  const [crop, setCrop] = React.useState<Crop>();
 
   const { data: signer } = useSigner();
 
