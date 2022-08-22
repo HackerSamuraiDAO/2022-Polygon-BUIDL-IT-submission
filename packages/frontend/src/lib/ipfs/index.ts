@@ -27,7 +27,7 @@ export const metadata = async (
   latitude: number,
   longitude: number
 ) => {
-  const { url } = await client.store({
+  const data = await client.store({
     name,
     description,
     image,
@@ -43,5 +43,6 @@ export const metadata = async (
       },
     ],
   });
-  return url as string;
+
+  return { uri: data.url as string, modelURI: data.data.animation_url.href };
 };

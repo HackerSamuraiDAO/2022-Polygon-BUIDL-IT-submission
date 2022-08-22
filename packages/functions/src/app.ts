@@ -1,7 +1,8 @@
-import express from "express";
 import cors from "cors";
-import { sign } from "./functions/sign";
+import express from "express";
+
 import { get } from "./functions/get";
+import { sign } from "./functions/sign";
 
 const app = express();
 

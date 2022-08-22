@@ -19,6 +19,10 @@ task("deploy", "deploy").setAction(async (_, { network, ethers }) => {
   const rakugaki = await Rakugaki.deploy();
   networks[name].contracts.rakugaki = rakugaki.address;
 
+  const Aggregator = await ethers.getContractFactory("Aggregator");
+  const aggregator = await Aggregator.deploy(rakugaki.address);
+  networks[name].contracts.aggregator = aggregator.address;
+
   fs.writeFileSync(path.join(__dirname, "../networks.json"), JSON.stringify(networks));
   console.log("DONE");
 });

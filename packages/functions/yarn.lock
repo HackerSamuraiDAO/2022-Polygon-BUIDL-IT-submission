@@ -1895,7 +1895,14 @@ etag@~1.8.1:
   resolved "https://registry.yarnpkg.com/etag/-/etag-1.8.1.tgz#41ae2eeb65efa62268aebfea83ac7d79299b0887"
   integrity sha512-aIL5Fx7mawVa300al2BnEE4iNvo1qETxLrPI/o05L7z6go7fCw1J6EQmbK4FmJ2AS7kgVF/KEZWufBfdClMcPg==
 
-ethers@^5.6.9:
+ethers-multicall@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/ethers-multicall/-/ethers-multicall-0.2.3.tgz#872b5ad7d6b5d4d7f2960c33bf36bd46d034ac41"
+  integrity sha512-RaWQuLy+HzeKOibptlc9RZ6j7bT1H6VnkdAKTHiLx2t/lpyfS2ckXHdQhhRbCaXNc1iu6CgoisgMejxKHg84tg==
+  dependencies:
+    ethers "^5.0.0"
+
+ethers@^5.0.0, ethers@^5.6.9:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.7.0.tgz#0055da174b9e076b242b8282638bc94e04b39835"
   integrity sha512-5Xhzp2ZQRi0Em+0OkOcRHxPzCfoBfgtOQA+RUylSkuHbhTEaQklnYi2hsWbRgs3ztJsXVXd9VKBcO1ScWL8YfA==

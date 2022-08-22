@@ -24,6 +24,11 @@ import { TakePhotoIcon } from "./TakePhotoIcon";
 export type MainMode = "map" | "photo";
 export type ModalMode = "photoPreview" | "modelPreview" | "completed";
 
+const countDecimals = function (value: number) {
+  if (Math.floor(value) === value) return 0;
+  return value.toString().split(".")[1].length || 0;
+};
+
 export const Main: React.FC = () => {
   const { logger, onOpen: onLoggerOpen, onClose: onLoggerClose } = useLogger();
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -41,6 +46,7 @@ export const Main: React.FC = () => {
 
   const [model, setModel] = React.useState("");
 
+  const [tokens, setTokens] = React.useState([]);
   const photoModeInitialMessage = "photo mode selected. you can take graffiti to covert to NFT.";
 
   const { data: signer } = useSigner();
@@ -49,6 +55,9 @@ export const Main: React.FC = () => {
     navigator.geolocation.getCurrentPosition((geo) => {
       setLat(geo.coords.latitude);
       setLng(geo.coords.longitude);
+    });
+    axios.get(`${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/get`).then(({ data }) => {
+      setTokens(data);
     });
   }, []);
 
@@ -104,32 +113,48 @@ export const Main: React.FC = () => {
     //TODO: update
     const imageFile = file(image, "nft.png", "image/png");
     console.log(imageFile);
-    const modelURI = await file(model, "nft.gltf", "model/gltf+json");
-    console.log(modelURI);
-    const tokenURI = await metadata("rakugaki", "rakugaki", imageFile, modelURI, lat, lng);
+    const modelFile = await file(model, "nft.gltf", "model/gltf+json");
+    console.log(modelFile);
+    const { uri: tokenURI, modelURI } = await metadata("rakugaki", "rakugaki", imageFile, modelFile, lat, lng);
 
     console.log(tokenURI);
 
     const { chainId, rpc, contracts } = networks[network];
     const { rakugaki } = contracts;
 
-    console.log(tokenURI, chainId, rpc, rakugaki);
-    const { data } = await axios.post(
-      `${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/sign`,
-      {
-        tokenURI,
-        chainId,
-        rpc,
-        rakugaki,
-      },
-      axiosConfig
-    );
-    console.log(data);
+    // console.log(tokenURI, chainId, rpc, rakugaki);
+    // const { data } = await axios.post(
+    //   `${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/sign`,
+    //   {
+    //     tokenURI,
+    //     chainId,
+    //     rpc,
+    //     rakugaki,
+    //   },
+    //   axiosConfig
+    // );
+    // console.log(data);
 
     const contract = new ethers.Contract(networks[network].contracts.rakugaki, RakugakiArtifact.abi, signer);
     const address = await signer.getAddress();
-    console.log(address, tokenURI);
-    const tx = await contract.mint(address, tokenURI);
+
+    const to = address;
+
+    const latDecimalLength = countDecimals(lat);
+    const latNum = lat * 10 ** latDecimalLength;
+    const latFormatted = latNum.toString();
+    const lngDecimalLength = countDecimals(lng);
+    const lngNum = lng * 10 ** lngDecimalLength;
+    const lngFormatted = lngNum.toString();
+    const location = {
+      lat: latFormatted.toString(),
+      latDecimalLength,
+      lng: lngFormatted.toString(),
+      lngDecimalLength,
+    };
+
+    console.log(to, location, modelURI, tokenURI);
+    const tx = await contract.mint(to, location, modelURI, tokenURI);
     const receipt = await tx.wait();
     console.log(receipt);
     const tokenId = receipt.events[0].args.tokenId.toString();
@@ -148,7 +173,7 @@ export const Main: React.FC = () => {
 
   return (
     <Box minHeight={"100vh"} w={"full"} position="relative">
-      {mainMode === "map" && <Map lat={lat} lng={lng} />}
+      {mainMode === "map" && <Map tokens={tokens} lat={lat} lng={lng} />}
       {mainMode === "photo" && <Camera ref={camera} errorMessages={{}} facingMode="environment" />}
       <Box bottom="8" position="absolute" w="full">
         <Flex justify={"center"} position="relative">
@@ -277,7 +302,7 @@ export const Main: React.FC = () => {
                 size={config.styles.button.size}
                 fontSize={config.styles.button.fontSize}
                 color={config.styles.text.color.primary}
-                href={`https://testnets.opensea.io/assets/rinkeby/${networks.rinkeby.contracts.rakugaki}/${tokenId}`}
+                href={`https://testnets.opensea.io/assets/${network}/${networks[network].contracts.rakugaki}/${tokenId}`}
                 target="_blank"
                 style={{ textDecoration: "none" }}
               >

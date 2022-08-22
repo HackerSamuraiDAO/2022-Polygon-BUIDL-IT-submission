@@ -6,10 +6,12 @@ import { SEO } from "../components/SEO";
 
 const Home: NextPage = () => {
   return (
-    <Layout>
+    <>
       <SEO />
-      <Main />
-    </Layout>
+      <Layout>
+        <Main />
+      </Layout>
+    </>
   );
 };
 

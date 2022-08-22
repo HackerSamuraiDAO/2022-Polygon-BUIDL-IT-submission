@@ -14,13 +14,18 @@ const config: HardhatUserConfig = {
     hardhat: useHardhatFork
       ? {
           forking: {
-            url: networks.rinkeby.rpc,
+            url: networks.mumbai.rpc,
           },
         }
       : {},
-    rinkeby: {
-      chainId: networks.rinkeby.chainId,
-      url: networks.rinkeby.rpc,
+    mumbai: {
+      chainId: networks.mumbai.chainId,
+      url: networks.mumbai.rpc,
+      accounts,
+    },
+    polygon: {
+      chainId: networks.polygon.chainId,
+      url: networks.polygon.rpc,
       accounts,
     },
   },
