@@ -1,4 +1,5 @@
 import { Box, Button, Center, Flex, HStack, Image, Link, Stack, Text, useDisclosure } from "@chakra-ui/react";
+import axios from "axios";
 import { ethers } from "ethers";
 import React from "react";
 import { Camera } from "react-camera-pro";
@@ -6,8 +7,10 @@ import { useSigner } from "wagmi";
 
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
 import networks from "../../../../contracts/networks.json";
+import { SignInput, SignOutput } from "../../../../functions/src/functions/sign";
 import config from "../../../config.json";
-// import { add, file, metadata } from "../../lib/ipfs";
+import { axiosConfig } from "../../lib/axios";
+import { network } from "../../lib/env";
 import { file, metadata } from "../../lib/ipfs";
 import { sleep } from "../../lib/utils/sleep";
 import { ConnectWalletWrapper } from "../ConnectWalletWrapper";
@@ -92,7 +95,6 @@ export const Main: React.FC = () => {
   };
 
   const modelToNFT = async () => {
-    const network = networks.rinkeby;
     if (!signer || !network || !lat || !lng) {
       return;
     }
@@ -105,7 +107,26 @@ export const Main: React.FC = () => {
     const modelURI = await file(model, "nft.gltf", "model/gltf+json");
     console.log(modelURI);
     const tokenURI = await metadata("rakugaki", "rakugaki", imageFile, modelURI, lat, lng);
-    const contract = new ethers.Contract(network.contracts.rakugaki, RakugakiArtifact.abi, signer);
+
+    console.log(tokenURI);
+
+    const { chainId, rpc, contracts } = networks[network];
+    const { rakugaki } = contracts;
+
+    console.log(tokenURI, chainId, rpc, rakugaki);
+    const { data } = await axios.post(
+      `${process.env.NEXT_PUBLIC_FUNCTIONS_BASE_URI}/sign`,
+      {
+        tokenURI,
+        chainId,
+        rpc,
+        rakugaki,
+      },
+      axiosConfig
+    );
+    console.log(data);
+
+    const contract = new ethers.Contract(networks[network].contracts.rakugaki, RakugakiArtifact.abi, signer);
     const address = await signer.getAddress();
     console.log(address, tokenURI);
     const tx = await contract.mint(address, tokenURI);

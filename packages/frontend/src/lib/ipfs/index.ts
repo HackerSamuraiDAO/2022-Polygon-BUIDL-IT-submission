@@ -1,4 +1,4 @@
-import { Blob, File, NFTStorage } from "nft.storage";
+import { File, NFTStorage } from "nft.storage";
 
 const client = new NFTStorage({
   token:
@@ -18,12 +18,6 @@ export const file = (data: string, file: string, type: "image/png" | "model/gltf
   const _file = type === "image/png" ? toBuffer(data) : data;
   return new File([_file], file, { type });
 };
-
-// export const add = async (data: string) => {
-//   const blob = new Blob([data]);
-//   const cid = await client.storeBlob(blob);
-//   return `ipfs://${cid}`;
-// };
 
 export const metadata = async (
   name: string,
@@ -49,5 +43,5 @@ export const metadata = async (
       },
     ],
   });
-  return url;
+  return url as string;
 };
