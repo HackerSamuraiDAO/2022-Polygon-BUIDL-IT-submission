@@ -31,7 +31,7 @@ const config: HardhatUserConfig = {
   },
   etherscan: {
     apiKey: {
-      rinkeby: ethersanApiKey,
+      polygonMumbai: ethersanApiKey,
     },
   },
 };

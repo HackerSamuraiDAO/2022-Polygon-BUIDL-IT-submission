@@ -17,7 +17,7 @@ task("verify", "verify").setAction(async (_, { network, run }) => {
     .map(([name, address]) => {
       return run("verify:verify", {
         address,
-        constructorArguments: [],
+        constructorArguments: name === "Aggregator" ? [contracts.rakugaki] : [],
       }).catch((e) => {
         console.log(name, e.message);
       });
