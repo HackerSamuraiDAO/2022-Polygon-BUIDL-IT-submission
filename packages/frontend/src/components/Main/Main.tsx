@@ -9,7 +9,6 @@ import { useSigner } from "wagmi";
 
 import RakugakiArtifact from "../../../../contracts/artifacts/contracts/Rakugaki.sol/Rakugaki.json";
 import networks from "../../../../contracts/networks.json";
-import { SignInput, SignOutput } from "../../../../functions/src/functions/sign";
 import config from "../../../config.json";
 import { axiosConfig } from "../../lib/axios";
 import { network } from "../../lib/env";
