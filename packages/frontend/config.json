@@ -2,7 +2,7 @@
   "app": {
     "name": "Rakugaki",
     "description": "Save the Graffiti",
-    "uri": "https://rakugaki-2022-polygon-buidl-fdonnxsjd-blockbase.vercel.app",
+    "uri": "https://rakugaki-2022-polygon-buidl-it.vercel.app",
     "defaultLog": "Rakugaki enables you to discover graffiti and archive it using IPFS and polygon NFT.",
     "layout": "dynamic"
   },
